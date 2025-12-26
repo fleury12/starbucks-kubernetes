@@ -39,13 +39,17 @@ resource "aws_security_group" "ec2_security_group" {
     Name = "Monitoring server security group"
   }
 }
-
 resource "aws_instance" "Monitoring_server" {
-ami = "ami-000e50175c5f86214"  
-instance_type = "t2.medium"
-security_groups = [aws_security_group.ec2_security_group.name]
-key_name = var.key_name
-tags = {
-  Name: var.instance_name
+  ami           = "ami-000e50175c5f86214"
+  instance_type = "t3.medium"
+  key_name      = var.key_name
+
+  vpc_security_group_ids = [
+    aws_security_group.ec2_security_group.id
+  ]
+
+  tags = {
+    Name = var.instance_name
+  }
 }
-}
+
